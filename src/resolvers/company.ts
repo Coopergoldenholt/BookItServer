@@ -23,9 +23,26 @@ class CompanyResponse {
 export class CompanyResolver {
     @Mutation(() => CompanyResponse)
     async createCompany(@Arg('company') company: CreateCompanyInput, @Ctx() { req }: MyContext): Promise<CompanyResponse | undefined> {
+        const db = req.app.get('db')
         let account;
+        let createdCompany
         try {
-            account = await createConnectedAccount()
+            account = await createConnectedAccount(company)
+            const address = await db.insertAddress([
+                company.companyAddress.street,
+                company.companyAddress.postalCode,
+                company.companyAddress.city,
+                company.companyAddress.province,
+                company.companyAddress.country
+            ])
+
+            createdCompany = await db.insertCompany([
+                company.companyName,
+                address.address_id,
+                company.businessProfile.productDescription,
+                account.id,
+                1
+            ])
         }
         catch {
             return {
@@ -33,8 +50,7 @@ export class CompanyResolver {
             }
         }
 
-        console.log(account)
-        return undefined
+        return createdCompany
     }
 
     @Query(() => CompanyResponse)

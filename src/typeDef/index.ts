@@ -137,6 +137,12 @@ class StripeAcceptance {
 @InputType()
 export class CreateCompanyInput {
     @Field()
+    companyName: string;
+
+    @Field()
+    companyAddress: AddressInput;
+
+    @Field()
     individual!: IndividualInput;
 
     @Field()
