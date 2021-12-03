@@ -143,7 +143,7 @@ export class CreateCompanyInput {
     email: string;
 
     @Field()
-    businessType: string;
+    businessType: 'individual';
 
     @Field()
     businessProfile: StripeBusinessProfile

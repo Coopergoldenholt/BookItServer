@@ -25,33 +25,39 @@ export const createConnectedAccount = async (company: CreateCompanyInput) => {
             first_name: company.individual.firstName,
             last_name: company.individual.lastName,
             email: company.individual.email,
-            address: { line1: company.individual.address.street, city: 'Vineyard', state: 'Utah', postal_code: '84059', country: 'US' },
-            phone: '8016347706',
-            dob: {
-                day: 1,
-                month: 1,
-                year: 1901
+            address: {
+                line1: company.individual.address.street,
+                city: company.individual.address.city,
+                state: company.individual.address.province,
+                postal_code: company.individual.address.postalCode,
+                country: company.individual.address.country
             },
-            ssn_last_4: '0000'
+            phone: company.individual.phone,
+            dob: {
+                day: company.individual.dob.day,
+                month: company.individual.dob.month,
+                year: company.individual.dob.year
+            },
+            ssn_last_4: company.individual.ssnLast4
         },
-        email: 'jenny.rosen@example.com',
-        business_type: 'individual',
+        email: company.email,
+        business_type: company.businessType,
         capabilities: {
             card_payments: { requested: true },
             transfers: { requested: true },
         },
         business_profile: {
-            mcc: '5045',
-            product_description: 'We do stuff for out customer'
+            mcc: company.businessProfile.mcc,
+            product_description: company.businessProfile.productDescription
         },
         external_account: {
             object: 'bank_account',
             country: 'US',
             currency: 'USD',
-            routing_number: '110000000',
-            account_number: '000999999991',
+            routing_number: company.externalAccount.routingNumber,
+            account_number: company.externalAccount.accountNumber,
         },
-        tos_acceptance: { date: 1609798905, ip: '8.8.8.8' }
+        tos_acceptance: { date: company.tokenAcceptance.date, ip: company.tokenAcceptance.ip }
 
     });
 
